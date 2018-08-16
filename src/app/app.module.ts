@@ -1,15 +1,16 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { StoreModule, MetaReducer } from '@ngrx/store';
-import * as fromRouter from '@ngrx/router-store';
-import { storeFreeze } from 'ngrx-store-freeze';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { AppComponent } from './app.component';
-import { environment } from '../environments/environment';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
+import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { EffectsModule } from '@ngrx/effects';
+import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { MetaReducer, StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { storeFreeze } from 'ngrx-store-freeze';
+
+import { environment } from '../environments/environment';
+import { EmployeeStoreModule } from '../store/Employee/employee-store.module';
 import { appReducer, CustomSerialier } from '../store/root/root.reducer';
+import { AppComponent } from './app.component';
 import { routes } from './app.route';
 
 export const metaReducers: MetaReducer<any>[] = !environment.production ? [storeFreeze] : [];
@@ -22,6 +23,7 @@ export const metaReducers: MetaReducer<any>[] = !environment.production ? [store
     BrowserModule,
     StoreModule.forRoot(appReducer, { metaReducers }),
     EffectsModule.forRoot([]),
+    EmployeeStoreModule,
     StoreRouterConnectingModule,
     StoreDevtoolsModule.instrument(),
     RouterModule.forRoot(routes),
