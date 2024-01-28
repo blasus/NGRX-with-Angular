@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Observable } from '../../../node_modules/rxjs/Observable';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { IEmployee } from '../../store/Employee/Models/employee.model';
-import { Store } from '../../../node_modules/@ngrx/store';
 import { getAllEmployeesSelector } from '../../store/Employee/Selector/employee.selector';
 
 @Component({

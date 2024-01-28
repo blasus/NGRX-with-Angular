@@ -1,5 +1,4 @@
 import { Action } from '@ngrx/store';
-
 import { IEmployee } from '../Models/employee.model';
 
 export enum ActionTypes {

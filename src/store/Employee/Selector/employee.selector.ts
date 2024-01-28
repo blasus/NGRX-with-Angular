@@ -1,25 +1,31 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { AllEmployeeState, employeeFeatureKey, getEmployeeLoaded, selectAllEmployee, selectEmployeeEntities } from '../Reducer/employee.reducer';
 
-import * as fromState from '../reducer/employee.reducer';
-import * as fromFeature from '../reducer/employee.reducer';
-import { AllEmployeeState } from '../reducer/employee.reducer';
+export const getAllEmployeeInfo = createFeatureSelector<AllEmployeeState>(employeeFeatureKey);
 
-export const employeeFeature = 'employee';
+export const getEmployeeState = createSelector(
+  getAllEmployeeInfo,
+  (state: AllEmployeeState) => state.employee
+);
 
-export const getAllEmployeeInfo = createFeatureSelector<AllEmployeeState>(employeeFeature);
-
-export const getEmployeeState = createSelector(getAllEmployeeInfo, (state: AllEmployeeState) => {
-  return state.employee
-})
-
-// get all Employee entities
+/**
+ * Gets all Employee entities
+ */
 export const getAllEmployeeEntitiesSelector = createSelector(
-  getEmployeeState, fromFeature.selectEmployeeEntities);
+  getEmployeeState, selectEmployeeEntities);
 
-// get all Employee location
-export const getAllEmployeesSelector = createSelector(getEmployeeState,
-  fromFeature.selectAllEmployee);
+/**
+ * Gets all Employee locations
+ */ 
+export const getAllEmployeesSelector = createSelector(
+  getEmployeeState,
+  selectAllEmployee
+);
 
-  // get Artifact loaded
-export const getEmployeeLoadedSelector =
-createSelector(getEmployeeState, fromFeature.getEmployeeLoaded);
+/**
+ * Gets the loaded employee flag.
+ */
+export const getEmployeeLoadedSelector = createSelector(
+  getEmployeeState,
+  getEmployeeLoaded
+);

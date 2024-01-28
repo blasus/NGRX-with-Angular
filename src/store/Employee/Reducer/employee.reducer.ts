@@ -1,8 +1,9 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { ActionReducerMap } from '@ngrx/store';
-
-import * as EmployeeAction from '../actions/employee.action';
 import { IEmployee } from './../Models/employee.model';
+import { ActionTypes, EmployeeApiActions } from '../Actions/employee.action';
+
+export const employeeFeatureKey = 'employee';
 
 const employeeAdapter = createEntityAdapter<IEmployee>();
 
@@ -26,33 +27,36 @@ export const EMPLOYEE_INITIAL_STATE: EmployeeState = employeeAdapter.getInitialS
   error: '',
 });
 
-export function employeeReducer(state = EMPLOYEE_INITIAL_STATE,
-  action: EmployeeAction.EmployeeApiActions): EmployeeState {
+export function employeeReducer(
+  state = EMPLOYEE_INITIAL_STATE,
+  action: EmployeeApiActions
+): EmployeeState {
+  
   switch (action.type) {
-    case EmployeeAction.ActionTypes.LOAD_EMPLOYEE_INFORMATION: {
+    case ActionTypes.LOAD_EMPLOYEE_INFORMATION: {
       return {
         ...state,
         loading: true,
         loaded: false,
       };
     }
-    case EmployeeAction.ActionTypes.INFORMATION_FETCH_SUCCEEDED: {
-      return employeeAdapter.addAll(action.payload, {
+    case ActionTypes.INFORMATION_FETCH_SUCCEEDED: {
+      return employeeAdapter.addMany(action.payload, {
         ...state,
         loaded: true,
         loading: false,
         error: '',
       });
     }
+    default: 
+      return state;
   }
-  return state;
 }
 
 export const {
   selectEntities: selectEmployeeEntities,
   selectAll: selectAllEmployee,
   selectIds: selectArtifactsIds,
-
 } = employeeAdapter.getSelectors();
 
 export const getEmployeeLoaded = (state: EmployeeState) => state.loaded;

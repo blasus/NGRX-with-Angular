@@ -1,52 +1,54 @@
-import { Injectable } from '@angular/core';
-import { Effect } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { filter, switchMap } from 'rxjs/operators';
-
+import { inject } from '@angular/core';
+import { Store, select } from '@ngrx/store';
+import { filter, of, switchMap } from 'rxjs';
 import { getEmployeeLoaded } from '../Reducer/employee.reducer';
-import { of } from '../../../../node_modules/rxjs/internal/observable/of';
 import { IEmployee } from '../Models/employee.model';
 import { InformationFetchSucceeded } from '../Actions/employee.action';
+import { createEffect } from '@ngrx/effects';
 
-@Injectable()
-export class EmployeeAPIEffects {
+/*
+ * Functional effects defined here.
+ * See: https://ngrx.io/guide/effects
+ */
 
-  constructor(
-    private store: Store<IEmployee>,
-  ) { }
+/**
+ * This effect checks the mocked API call to fetch employees
+ * (getEmployeeLoaded) has completed - returned a boolean value true.
+ * If so, the effect then dispatches a new action notifying the result.
+ */
+export const loadEmployees = createEffect(
+  (store = inject(Store<IEmployee>)) => 
+    store
+      .pipe(select(getEmployeeLoaded))
+      .pipe(
+        filter((loaded) => !!loaded),
+        switchMap(() => {
+          return of(new InformationFetchSucceeded(EMPLOYEE_INFO));
+        })
+      ),
+  { functional: true }
+);
 
-  @Effect() loadEmployeeEffect$ = combineLatest(
-    this.store.pipe(select(getEmployeeLoaded)),
-  ).pipe(
-    filter(([loaded]) => !loaded),
-    switchMap(() => {
-      return of(new InformationFetchSucceeded(EMPLOYEE_INFO));
-    }),
-  );
-
-
-}
-
-const EMPLOYEE_INFO: IEmployee[] = [{
-  department: 'HelathCare',
-  id: '001',
-  isMarried: true,
-  name: 'Mike Stephen',
-  salary: '480000',
-},
-{
-  department: 'HelathCare',
-  id: '002',
-  isMarried: true,
-  name: 'Mike Jhon',
-  salary: '480000',
-},
-{
-  department: 'HelathCare',
-  id: '003',
-  isMarried: true,
-  name: 'Bless Stephen',
-  salary: '480000',
-}
-]
+const EMPLOYEE_INFO: IEmployee[] = [
+  {
+    department: 'HelathCare',
+    id: '001',
+    isMarried: true,
+    name: 'Mike Stephen',
+    salary: '480000',
+  },
+  {
+    department: 'HelathCare',
+    id: '002',
+    isMarried: true,
+    name: 'Mike Jhon',
+    salary: '480000',
+  },
+  {
+    department: 'HelathCare',
+    id: '003',
+    isMarried: true,
+    name: 'Bless Stephen',
+    salary: '480000',
+  }
+];
