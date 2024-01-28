@@ -3,17 +3,18 @@ import { environment } from './environments/environment';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { StoreRouterConnectingModule, provideRouterStore } from '@ngrx/router-store';
-import { appReducer } from './store/root/root.reducer';
+import { appReducers } from './store/root/root.reducer';
 import {
   ActionReducer,
   MetaReducer,
+  StoreModule,
   provideStore
 } from '@ngrx/store';
 import { provideRouter } from '@angular/router';
 import { routes } from './app/app.route';
 import { provideHttpClient } from '@angular/common/http';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { EffectsModule } from '@ngrx/effects';
+import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { CustomSerializer } from './store/root/custom-route-serializer';
 
 if (environment.production) {
@@ -37,15 +38,22 @@ export const metaReducers: MetaReducer<any>[] = [
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
-    provideStore(appReducer, { metaReducers }),
+    provideStore(appReducers, { metaReducers }),
     provideRouterStore({
       serializer: CustomSerializer
     }),
+    provideEffects(),
     provideHttpClient(),
     importProvidersFrom([
-      StoreDevtoolsModule.instrument(),
-      EffectsModule,
-      StoreRouterConnectingModule
+      StoreModule.forRoot(appReducers, { metaReducers }),
+      EffectsModule.forRoot([]),
+      StoreRouterConnectingModule.forRoot({
+        serializer: CustomSerializer
+      }),
+      StoreDevtoolsModule.instrument({
+        maxAge: 25,
+        logOnly: true
+      }),
     ])
   ]
 });
