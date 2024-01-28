@@ -1,10 +1,12 @@
-import { ModuleWithProviders } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
+import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: '', loadChildren: './Home/home.module#HomeModule' },
-  { path: 'employee', loadChildren: './Employee/employee.module#EmployeeModule' },
+  { 
+    path: '',
+    loadChildren: () => import('./Home/home.module').then(m => m.HomeModule)
+  },
+  { 
+    path: 'employee',
+    loadChildren: () => import('./Employee/employee.module').then(m => m.EmployeeModule)
+  },
 ];
-
-export const routing: ModuleWithProviders = RouterModule.forRoot(routes, { useHash: true });
