@@ -1,8 +1,7 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { createSelector } from '@ngrx/store';
 import {
   AllEmployeeState,
-  EmployeeState,
-  employeeFeatureKey
+  EmployeeState
 } from '../Reducer/employee.reducer';
 
 export const getAllEmployeeInfo = (state: AllEmployeeState) => state.employee
