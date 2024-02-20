@@ -1,10 +1,8 @@
 import { inject } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { filter, of, switchMap } from 'rxjs';
-import { getEmployeeLoaded } from '../Reducer/employee.reducer';
-import { IEmployee } from '../Models/employee.model';
-import { InformationFetchSucceeded } from '../Actions/employee.action';
-import { createEffect } from '@ngrx/effects';
+import { EmployeeActions } from '../Actions/employee.action';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { EmployeeService } from 'src/app/Employee/employee.service';
+import { catchError, exhaustMap, map, of } from 'rxjs';
 
 /*
  * Functional effects defined here.
@@ -16,39 +14,19 @@ import { createEffect } from '@ngrx/effects';
  * (getEmployeeLoaded) has completed - returned a boolean value true.
  * If so, the effect then dispatches a new action notifying the result.
  */
-export const loadEmployees = createEffect(
-  (store = inject(Store<IEmployee>)) => 
-    store
-      .pipe(select(getEmployeeLoaded))
-      .pipe(
-        filter((loaded) => !!loaded),
-        switchMap(() => {
-          return of(new InformationFetchSucceeded(EMPLOYEE_INFO));
-        })
-      ),
+export const loadEmployees$ = createEffect(
+  (actions$ = inject(Actions), employeeService = inject(EmployeeService)) => {
+    return actions$.pipe(
+      ofType(EmployeeActions.loadEmployees),
+      exhaustMap(() => 
+        employeeService.getEmployees().pipe(
+          map(employees => EmployeeActions.loadedEmployees({ employees })),
+          catchError((error: { message: string }) => 
+            of(EmployeeActions.employeesLoadedFailure({ errorMsg: error.message }))
+          )
+        )
+      )
+    )
+  },  
   { functional: true }
 );
-
-const EMPLOYEE_INFO: IEmployee[] = [
-  {
-    department: 'HelathCare',
-    id: '001',
-    isMarried: true,
-    name: 'Mike Stephen',
-    salary: '480000',
-  },
-  {
-    department: 'HelathCare',
-    id: '002',
-    isMarried: true,
-    name: 'Mike Jhon',
-    salary: '480000',
-  },
-  {
-    department: 'HelathCare',
-    id: '003',
-    isMarried: true,
-    name: 'Bless Stephen',
-    salary: '480000',
-  }
-];

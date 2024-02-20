@@ -1,5 +1,10 @@
+<div>Your employees:</div>
 <ul>
-  <li *ngFor="let employee of (employeeData$ | async)">
-    <a href="#">{{employee.name}}</a>
-  </li>
+  @for (employee of employees$ | async; track employee.id) {
+    <li>
+      <a href="#">{{employee.name}}</a>
+    </li>
+  } @empty {
+    loading...
+  }
 </ul>

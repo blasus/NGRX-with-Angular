@@ -1,31 +1,16 @@
-import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { AllEmployeeState, employeeFeatureKey, getEmployeeLoaded, selectAllEmployee, selectEmployeeEntities } from '../Reducer/employee.reducer';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  AllEmployeeState,
+  EmployeeState,
+  employeeFeatureKey
+} from '../Reducer/employee.reducer';
 
-export const getAllEmployeeInfo = createFeatureSelector<AllEmployeeState>(employeeFeatureKey);
+export const getAllEmployeeInfo = (state: AllEmployeeState) => state.employee
 
-export const getEmployeeState = createSelector(
+/**
+ * Get All employees
+ */
+export const getEmployees = createSelector(
   getAllEmployeeInfo,
-  (state: AllEmployeeState) => state.employee
-);
-
-/**
- * Gets all Employee entities
- */
-export const getAllEmployeeEntitiesSelector = createSelector(
-  getEmployeeState, selectEmployeeEntities);
-
-/**
- * Gets all Employee locations
- */ 
-export const getAllEmployeesSelector = createSelector(
-  getEmployeeState,
-  selectAllEmployee
-);
-
-/**
- * Gets the loaded employee flag.
- */
-export const getEmployeeLoadedSelector = createSelector(
-  getEmployeeState,
-  getEmployeeLoaded
+  (state: EmployeeState) => state.employees
 );
