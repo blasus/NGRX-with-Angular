@@ -1,6 +1,6 @@
 <div>Your employees:</div>
 <ul>
-  @for (employee of employees$ | async; track employee.id) {
+  @for (employee of employees(); track employee.id) {
     <li>
       <a href="#">{{employee.name}}</a>
     </li>

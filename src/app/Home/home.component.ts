@@ -1,10 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { IEmployee } from '../../store/Employee/Models/employee.model';
 import { LOAD_EMPLOYEE_ACTION } from 'src/store/Employee/Actions/employee.action';
 import * as EmployeeSelectors from 'src/store/Employee/Selector/employee.selector';
-import { EmployeeState } from 'src/store/Employee/Reducer/employee.reducer';
 
 @Component({
   templateUrl: './home.component.html',
@@ -12,11 +9,8 @@ import { EmployeeState } from 'src/store/Employee/Reducer/employee.reducer';
 
 export class HomeComponent implements OnInit {
   
-  employees$!: Observable<IEmployee[]>;
-  
-  constructor(private store: Store<{ employee: EmployeeState }>) {
-    this.employees$ = this.store.select(EmployeeSelectors.getEmployees);
-  }
+  private readonly store = inject(Store);
+  readonly employees = this.store.selectSignal(EmployeeSelectors.getEmployees);
   
   ngOnInit(): void {
     // load the employees from the server
