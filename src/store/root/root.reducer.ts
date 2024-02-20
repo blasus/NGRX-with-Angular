@@ -2,7 +2,6 @@ import { RouterReducerState, routerReducer } from '@ngrx/router-store';
 import { ActionReducerMap, createReducer, createSelector } from '@ngrx/store';
 import { RouterStateURL } from './custom-route-serializer';
 import { environment } from 'src/environments/environment';
-import { EmployeeState } from '../Employee/Reducer/employee.reducer';
 
 /**
  * State containing the user role.
