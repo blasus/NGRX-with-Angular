@@ -1,10 +1,15 @@
 <div>Your employees:</div>
 <ul>
-  @for (employee of employees(); track employee.id) {
-    <li>
-      <a href="#">{{employee.name}}</a>
-    </li>
-  } @empty {
+  @if (loading()) {
     loading...
+  } @else {
+
+    @for (employee of employees(); track employee.id) {
+      <li>
+        <a href="#">{{employee.name}}</a>
+      </li>
+    } @empty {
+      you don't have any employees
+    }
   }
 </ul>

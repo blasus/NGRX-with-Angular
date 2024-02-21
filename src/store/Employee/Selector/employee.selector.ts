@@ -13,3 +13,11 @@ export const getEmployees = createSelector(
   getAllEmployeeInfo,
   (state: EmployeeState) => state.employees
 );
+
+/**
+ * Get Employee loading
+ */
+export const getEmployeeLoading = createSelector(
+  getAllEmployeeInfo,
+  (state: EmployeeState) => state.loading
+)

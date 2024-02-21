@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map, timer } from 'rxjs';
+import { Observable, map, tap, timer } from 'rxjs';
 import { IEmployee } from 'src/store/Employee/Models/employee.model';
 
 @Injectable({
@@ -9,30 +9,55 @@ export class EmployeeService {
 
   constructor() { }
 
+  /**
+   * Fetches the available employees for this user
+   * @returns the employees
+   */
   public getEmployees(): Observable<IEmployee[]> {
     return timer(500)
       .pipe(map(() => EMPLOYEE_INFO))
   }
+
+  /**
+   * Adds a new employee to the list of employees
+   * @param employee 
+   * @returns the added employee
+   */
+  public addEmployee(employee: IEmployee): Observable<IEmployee> {
+    return timer(500)
+      .pipe(
+        tap(() => console.log('Added employee:', employee)),
+        map(() => ({
+          ...employee,
+          // unique id
+          id: uniqueId()
+        })),
+        tap(employee => EMPLOYEE_INFO.push(employee)),
+        map((employee) => employee)
+      );
+  }
 }
+
+const uniqueId = () => Math.random().toString(16).slice(2);
 
 const EMPLOYEE_INFO: IEmployee[] = [
   {
     department: 'HealthCare',
-    id: '001',
+    id: uniqueId(),
     role: 'Health care specialist',
     name: 'Mike Stephen',
     salary: '480000',
   },
   {
     department: 'Finance',
-    id: '002',
+    id: uniqueId(),
     role: 'Accounts Assistant',
     name: 'Mike Jhon',
     salary: '480000',
   },
   {
     department: 'Development',
-    id: '003',
+    id: uniqueId(),
     role: 'Backend Developer',
     name: 'Bless Stephen',
     salary: '480000',

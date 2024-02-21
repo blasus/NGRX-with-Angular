@@ -22,7 +22,7 @@ export const loadEmployees$ = createEffect(
         employeeService.getEmployees().pipe(
           map(employees => EmployeeActions.loadedEmployees({ employees })),
           catchError((error: { message: string }) => 
-            of(EmployeeActions.employeesLoadedFailure({ errorMsg: error.message }))
+            of(EmployeeActions.employeeActionFailure({ errorMsg: error.message }))
           )
         )
       )
@@ -30,3 +30,25 @@ export const loadEmployees$ = createEffect(
   },  
   { functional: true }
 );
+
+/**
+ * This effect add the new eployee returned from the mocked API end point to the state
+ * (addEmployee).
+ * If so, the effect then dispatches a new action notifying the result.
+ */
+export const addEmployee$ = createEffect(
+  (actions$ = inject(Actions), employeeService = inject(EmployeeService)) => {
+    return actions$.pipe(
+      ofType(EmployeeActions.addEmployee),
+      exhaustMap(({ employee }) => 
+        employeeService.addEmployee(employee).pipe(
+          map(() => EmployeeActions.addedEmployee),
+          catchError((error: { message: string }) => 
+            of(EmployeeActions.employeeActionFailure({ errorMsg: error.message }))
+          )
+        )
+      )
+    )
+  },  
+  { functional: true }
+)

@@ -10,6 +10,7 @@ import * as EmployeeSelectors from 'src/store/Employee/Selector/employee.selecto
 export class HomeComponent implements OnInit {
   
   private readonly store = inject(Store);
+  readonly loading = this.store.selectSignal(EmployeeSelectors.getEmployeeLoading);
   readonly employees = this.store.selectSignal(EmployeeSelectors.getEmployees);
   
   ngOnInit(): void {
