@@ -46,20 +46,23 @@ const EMPLOYEE_INFO: IEmployee[] = [
     id: uniqueId(),
     role: 'Health care specialist',
     name: 'Mike Stephen',
-    salary: '480000',
+    email: 'mstephen@employee.com',
+    salary: 480000,
   },
   {
     department: 'Finance',
     id: uniqueId(),
     role: 'Accounts Assistant',
     name: 'Mike Jhon',
-    salary: '480000',
+    email: 'mjhon@employee.com',
+    salary: 480000,
   },
   {
     department: 'Development',
     id: uniqueId(),
     role: 'Backend Developer',
     name: 'Bless Stephen',
-    salary: '480000',
+    email: 'bstephen@employee.com',
+    salary: 480000,
   }
 ];
