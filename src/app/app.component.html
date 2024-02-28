@@ -1,10 +1,18 @@
-<div>Hi {{ role$ | async }}, welcome to NgRx in Angular!</div>
-<ul class="nav">
-  <li class="nav-item">
-    <a class="nav-link active" routerLink="">Home</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" routerLink="employee">Add an employee</a>
-  </li>
-</ul>
-<router-outlet></router-outlet>
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-lg bg-body-secondary mb-10">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">Hi {{ role$ | async }}, welcome to NgRx in Angular!</span>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" routerLink="">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="employee">Add an employee</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <router-outlet></router-outlet>
+</div>

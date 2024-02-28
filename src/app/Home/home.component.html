@@ -1,12 +1,21 @@
 <div>Your employees:</div>
-<ul>
+<ul class="list-group">
   @if (loading()) {
-    loading...
+    <div class="spinner-border text-info" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
   } @else {
 
     @for (employee of employees(); track employee.id) {
-      <li>
-        <a href="#">{{employee.name}}</a>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">
+            <a href="#">{{ employee.name }}</a>
+          </div>
+          <div>
+            <a href="#">{{ employee.email }}</a>
+          </div>
+        </div>
       </li>
     } @empty {
       you don't have any employees
